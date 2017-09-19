@@ -1,9 +1,10 @@
 #include <pthread.h>
 #include <stdio.h>
 #include <semaphore.h>
+#define bufferBound 5
 sem_t semaphore,bound;
 pthread_mutex_t mutex = PTHREAD_MUTEX_INITIALIZER;
-int queue[50];
+int queue[bufferBound];
 int queueLength;
 void *producer( void * param)
 {
@@ -38,7 +39,7 @@ int main()
 {
 	pthread_t threads[2];
 	sem_init( &semaphore, 0, 0 );
-	sem_init( &bound,0,10);
+	sem_init( &bound,0,bufferBound);
 	pthread_create( &threads[0], 0, producer, 0 );
 	pthread_create( &threads[1], 0, consumer, 0 );
 	pthread_join( threads[0], 0 );
