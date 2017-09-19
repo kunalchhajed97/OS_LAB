@@ -8,9 +8,9 @@ FILE *fp;
 int dataLength = 5;
 void *reader( void* param)
 {
-	sleep(0.1);
+	// sleep(0.1);
 	int num = *(int*)param;
-	char buffer[1000];
+	char buffer[100];
 	int i=0;
 	do
 	{
@@ -21,9 +21,10 @@ void *reader( void* param)
 		sem_post(&mutex);
 		
 		printf("#%d Reading: ",num);
-		sleep(0.5);
+		// sleep(0.5);
+		fseek(fp,0,SEEK_SET);
 		fscanf(fp,"%s",buffer);
-		puts(buffer);
+		printf("%s\n", buffer);
 		printf("#%d Reading Ended\n", num);
 
 		sem_wait(&mutex);
@@ -45,7 +46,8 @@ void *writer(void * param)
 		sem_wait(&wrt);
 
 		printf("#%d Writing started\n",num);
-		sleep(1);
+		// sleep(1);
+		fseek(fp,0,SEEK_END);
 		fprintf(fp, "%d,", i);
 		printf("#%d Writing complete\n",num);
 		
@@ -68,7 +70,7 @@ int main()
 		pthread_create( &writers[i], 0, writer, (void*)(indexes+i) );
 		pthread_create( &readers[i], 0, reader, (void*)(indexes+i) );
 	}
-	sleep(100);
+	sleep(1);
 	// for(i=0;i<5;i++)
 	// {	
 	// 	pthread_join( readers[i], 0 );
