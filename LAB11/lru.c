@@ -87,7 +87,7 @@ void printList(Node* head)
 	}
 	printf("\n");
 }
-int fifo(int arr[],int n)
+int lru(int arr[],int n)
 {
 	Node* head = NULL;
 	int c = 0;
@@ -110,5 +110,5 @@ int main()
 	for (int i = 0; i < n; ++i)
 		scanf("%d",&arr[i]);
 	
-	printf("No of page faults: %d\n",fifo(arr,n));
+	printf("No of page faults: %d\n",lru(arr,n));
 }		
