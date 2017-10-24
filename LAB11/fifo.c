@@ -1,5 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
+
+#define FRAME_SIZE 3 
 typedef struct node{
 	int data;
 	struct node* next;
@@ -10,10 +12,11 @@ Node* getNode(int val)
 	new->data = val;
 	return new;
 }
-Node* insert(Node* head,int val)
+Node* insert(Node* head,int val,int *c)
 {
 	if(head == NULL)
 	{
+		(*c)++;
 		head = getNode(val);
 		head->next = head;
 		return head;
@@ -22,33 +25,59 @@ Node* insert(Node* head,int val)
 	{
 		Node* temp = head;
 		int flag = 0;
-		while(temp!=head)
+		do
 		{
 			if(temp->data == val)
+			{
 				flag = -1;
+				break;
+			}
 			temp=temp->next;
 			flag++;
+		}while(temp!=head);
+		if(flag == -1)
+			return head;
+		else
+		{
+			(*c)++;
+			if(flag < FRAME_SIZE)
+			{
+				Node* t = getNode(val);
+				t->next = head->next;
+				head->next = t;
+				return t;
+			}
+			else
+			{
+				head->next->data = val;
+				return head->next;
+			}
 		}
-		// if(flag != -1)
-		// {
-		// 	if(flag < FRAME )
-		// }
-
 	}
+}
+void printList(Node* head)
+{
+	Node* temp = head->next;
+	printf("%d-->", head->data);
+	while(temp!= head)
+	{
+		printf("%d-->", temp->data);
+		temp=temp->next;
+	}
+	printf("\n");
 }
 int fifo(int arr[],int n)
 {
 	Node* head = NULL;
-	int len = 0;
+	int c = 0;
+	Node* p = NULL;
 	for (int i = 0; i < n; ++i)
 	{
-		head = insert(head,arr[i]);
-		head = head->next;
+		head = insert(head,arr[i],&c);
+		if(i==0) p=head;
+		printList(p);
 	}
-
-	
-
-
+	return c;
 }
 int main()
 {
@@ -59,5 +88,6 @@ int main()
 	printf("Enter %d page numbers\n",n);
 	for (int i = 0; i < n; ++i)
 		scanf("%d",&arr[i]);
-	fifo(arr,n);
+	
+	printf("No of page faults: %d\n",fifo(arr,n));
 }		
