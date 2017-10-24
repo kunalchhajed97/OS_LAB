@@ -63,7 +63,7 @@ int main()
 	sem_init( &mutex, 0, 1 );
 	sem_init( &wrt,0,1);
 	int i;
-	fp = fopen("data.txt","a+");
+	fp = fopen("data.txt","w+");
 	int indexes[]={1,2,3,4,5};
 	for(i=0;i<5;i++)
 	{	
